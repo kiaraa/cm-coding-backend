@@ -8,6 +8,6 @@ public class WelcomeMessageController {
 
     @GetMapping("/welcome-message")
     public String getWelcomeMessage() {
-        return "Welcome!";
+        return "Welcome, people!";
     }
 }

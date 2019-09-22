@@ -9,6 +9,6 @@ public class WelcomeMessageControllerTest {
     public void welcomeReturnsCorrectMessage() {
         WelcomeMessageController welcomeMessageController = new WelcomeMessageController();
         String welcome = welcomeMessageController.getWelcomeMessage();
-        assertThat(welcome).isEqualTo("Welcome!");
+        assertThat(welcome).isEqualTo("Welcome, people!");
     }
 }
