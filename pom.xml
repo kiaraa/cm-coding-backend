@@ -17,8 +17,8 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<java.version>11</java.version>
-		<java.release.version>11</java.release.version>
+		<java.version>1.8</java.version>
+		<java.release.version>1.8</java.release.version>
 		<start-class>com.cmcoding.cmcodingbackend.CmCodingBackendApplication</start-class>
 		<spotbugs-maven-plugin.version>3.1.11</spotbugs-maven-plugin.version>
 		<maven-pmd-plugin.version>3.11.0</maven-pmd-plugin.version>
