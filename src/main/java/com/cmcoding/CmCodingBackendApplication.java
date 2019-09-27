@@ -1,4 +1,4 @@
-package com.cmcoding.cmcodingbackend;
+package com.cmcoding;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

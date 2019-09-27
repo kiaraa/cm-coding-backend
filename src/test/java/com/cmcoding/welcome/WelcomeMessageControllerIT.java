@@ -1,6 +1,6 @@
 package com.cmcoding.welcome;
 
-import com.cmcoding.cmcodingbackend.CmCodingBackendApplication;
+import com.cmcoding.CmCodingBackendApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
