@@ -1,10 +1,14 @@
 package com.cmcoding.Categories;
 
 import com.cmcoding.Categories.Tip.Tip;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@RestController
 public class CategoryController {
 
     TipCategory cat1 = new TipCategory(1, "Test category 1", Arrays.asList(new Tip(4, "This is altogether too many things in this line.")));
@@ -37,4 +41,13 @@ public class CategoryController {
         }
     }
 
+    @GetMapping("/categories")
+    public List<TipCategory> getAllCategories() {
+        TipCategory example1 = new TipCategory(1, "General health", Arrays.asList(new Tip(1, "Eat vegetables"), new Tip(2, "Eat fruits")));
+        TipCategory example2 = new TipCategory(2, "Bones", Arrays.asList(new Tip(3, "Drink milk"), new Tip(4, "Don't break em!"), new Tip(5, "Osteoperosis is a bitch")));
+        List<TipCategory> allCategories = new ArrayList<>();
+        allCategories.add(example1);
+        allCategories.add(example2);
+        return allCategories;
+    }
 }

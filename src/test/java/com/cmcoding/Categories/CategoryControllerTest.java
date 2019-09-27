@@ -6,7 +6,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -66,7 +68,6 @@ public class CategoryControllerTest {
         Assertions.assertThat(cat1.getTips().get(0).getId()).isEqualTo(4);
         Assertions.assertThat(cat1.getTips().get(0).getTip()).isEqualTo("This is altogether too many things in this line.");
 
-
         Assertions.assertThat(cat2.getId()).isEqualTo(2);
         Assertions.assertThat(cat2.getName()).isEqualTo("Test category 2");
         Assertions.assertThat(cat2.getTips().size()).isEqualTo(2);
@@ -98,5 +99,20 @@ public class CategoryControllerTest {
         Assertions.assertThat(category2Tips.get(1).getTip()).isEqualTo("You absolute pedant.");
 
     }
+
+    @Test
+    public void testGetCategories(){
+        CategoryController categoryController = new CategoryController();
+
+        List<TipCategory> categories = categoryController.getAllCategories();
+
+        TipCategory example1 = new TipCategory(1, "General health", Arrays.asList(new Tip(1, "Eat vegetables"), new Tip(2, "Eat fruits")));
+        TipCategory example2 = new TipCategory(2, "Bones", Arrays.asList(new Tip(3, "Drink milk"), new Tip(4, "Don't break em!"), new Tip(5, "Osteoperosis is a bitch")));
+        Assertions.assertThat(categories).isEqualTo(Arrays.asList(example1, example2));
+
+
+    }
+
+
 
 }
