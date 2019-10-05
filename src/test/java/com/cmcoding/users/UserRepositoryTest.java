@@ -43,11 +43,12 @@ public class UserRepositoryTest {
 	}
 
 	@Test
-	public void saveAddsNumericIdsFrom1() {
-		this.userRepository.save(new UserEntity("Billy", "billy@gmail.com"));
-		this.userRepository.save(new UserEntity("Mandy", "mandy@gmail.com"));
+	public void saveAddsNumericIdsInInsertOrder() {
+		UserEntity billy = this.userRepository.save(new UserEntity("Billy", "billy@gmail.com"));
+		UserEntity mandy = this.userRepository.save(new UserEntity("Mandy", "mandy@gmail.com"));
 
-		Optional<UserEntity> user = this.userRepository.findById(2L);
-		Assertions.assertThat(user.get()).isEqualTo(new UserEntity(2L, "Mandy", "mandy@gmail.com"));
+		Long billyId = billy.getId();
+		Long mandyId = mandy.getId();
+		Assertions.assertThat(billyId + 1).isEqualTo(mandyId);
 	}
 }
