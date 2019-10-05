@@ -8,8 +8,12 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("com.cmcoding")
 public class CmCodingBackendApplication {
 
+
 	public static void main(String[] args) {
+		for(String arg:args) {
+			System.out.println(arg);
+		}
+
 		SpringApplication.run(CmCodingBackendApplication.class, args);
 	}
-
 }
