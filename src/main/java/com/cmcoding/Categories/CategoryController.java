@@ -2,6 +2,7 @@ package com.cmcoding.Categories;
 
 import com.cmcoding.Categories.Tip.Tip;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -14,7 +15,8 @@ public class CategoryController {
     TipCategory cat1 = new TipCategory(1, "Test category 1", Arrays.asList(new Tip(4, "This is altogether too many things in this line.")));
     TipCategory cat2 = new TipCategory(2, "Test category 2", Arrays.asList(new Tip(3, "This is altogether too many things in this other line."), new Tip(5, "You absolute pedant.")));
 
-    public Tip getSingleTipById(int catId, int tipId) {
+    @GetMapping("/categories/{catId}/tips/{tipId}")
+    public Tip getSingleTipById(@PathVariable("catId") int catId, @PathVariable("tipId") int tipId) {
         if (tipId == 2) {
             return new Tip(tipId, "test tip");
         }
@@ -23,7 +25,8 @@ public class CategoryController {
         }
     }
 
-    public TipCategory getCategoryById(int catId) {
+    @GetMapping(value = "/categories/{id}")
+    public TipCategory getCategoryById(@PathVariable("id") int catId) {
         if (catId == 1) {
             return cat1;
         }
@@ -32,7 +35,8 @@ public class CategoryController {
         }
     }
 
-    public List<Tip> getCategoryTips(int catId) {
+    @GetMapping(value = "/categories/{id}/tips")
+    public List<Tip> getCategoryTips(@PathVariable("id") int catId) {
         if (catId == 1) {
             return cat1.getTips();
         }

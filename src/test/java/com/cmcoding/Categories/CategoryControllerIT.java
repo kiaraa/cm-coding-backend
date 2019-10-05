@@ -56,4 +56,49 @@ public class CategoryControllerIT {
                 "  }\n" +
                 "]");
     }
+
+    @Test
+    public void testGetCategoryById() {
+        RestTemplate rt = new RestTemplate();
+        String url = "http://localhost:" + port + "/categories/1";
+        String response = rt.getForObject(url, String.class);
+        Assertions.assertThat(response).isEqualToIgnoringWhitespace("{\n" +
+                "  \"id\" : 1,\n" +
+                "  \"name\" : \"Test category 1\",\n" +
+                "  \"tips\":[\n" +
+                "    {\n" +
+                "      \"id\": 4,\n" +
+                "      \"tip\": \"This is altogether too many things in this line.\"\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}");
+    }
+
+    @Test
+    public void testGetCategoryIdTips(){
+        RestTemplate rt = new RestTemplate();
+        String url = "http://localhost:" + port + "/categories/2/tips";
+        String response = rt.getForObject(url, String.class);
+        Assertions.assertThat(response).isEqualToIgnoringWhitespace("[\n" +
+                "  {\n" +
+                "    \"id\": 3,\n" +
+                "    \"tip\": \"This is altogether too many things in this other line.\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "  \"id\": 5,\n" +
+                "  \"tip\": \"You absolute pedant.\"\n" +
+                "  }\n" +
+                "]");
+    }
+
+    @Test
+    public void getTipById(){
+        RestTemplate rt = new RestTemplate();
+        String url = "http://localhost:" + port + "/categories/2/tips/5";
+        String response = rt.getForObject(url, String.class);
+        Assertions.assertThat(response).isEqualToIgnoringWhitespace("{\n" +
+                "  \"id\": 3,\n" +
+                "  \"tip\": \"test tip 2\"\n" +
+                "}");
+    }
 }
