@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -49,6 +50,15 @@ public class UserRepositoryTest {
 
 		Long billyId = billy.getId();
 		Long mandyId = mandy.getId();
-		Assertions.assertThat(billyId + 1).isEqualTo(mandyId);
+		assertThat(billyId + 1).isEqualTo(mandyId);
+	}
+
+	@Test
+	public void saveReturnsTheSameObjectButWithIdPopulated() {
+		UserEntity grim = this.userRepository.save(new UserEntity("Grim", "grim@gmail.com"));
+
+		assertThat(grim.getId()).isNotNull();
+		assertThat(grim.getEmail()).isEqualTo("grim@gmail.com");
+		assertThat(grim.getName()).isEqualTo("Grim");
 	}
 }
