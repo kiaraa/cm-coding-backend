@@ -2,7 +2,7 @@ FROM openjdk:11-jdk-oraclelinux7
 COPY cm-coding-backend.jar /
 #COPY keystore /Users/chrisatkins/myssl/keystore
 #COPY truststore /Users/chrisatkins/myssl/truststore
-
+EXPOSE 8084
 ENTRYPOINT ["java", "-jar", "cm-coding-backend.jar"]
 
 #FROM ubuntu:18.04
