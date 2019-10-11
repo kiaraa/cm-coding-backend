@@ -8,6 +8,7 @@ public class WelcomeMessageController {
 
     @GetMapping("/welcome-message")
     public String getWelcomeMessage() {
+        System.out.println("Got a welcome-message request.");
         return "Welcome, people!";
     }
 }
