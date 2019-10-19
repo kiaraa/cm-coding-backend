@@ -4,18 +4,22 @@ import java.util.Objects;
 
 public class Tip {
 
-    private int id;
+    private Integer id;
     private String tip;
 
     public Tip() {
     }
 
-    public Tip(int id, String tip) {
+    public Tip(Integer id, String tip) {
         this.id = id;
         this.tip = tip;
     }
 
-    public int getId() {
+    public Tip(String tip) {
+        this.tip = tip;
+    }
+
+    public Integer getId() {
         return id;
     }
 
@@ -28,13 +32,12 @@ public class Tip {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tip tip1 = (Tip) o;
-        return id == tip1.id &&
+        return Objects.equals(id, tip1.id) &&
                 Objects.equals(tip, tip1.tip);
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, tip);
     }
 
