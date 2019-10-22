@@ -11,6 +11,11 @@ public class TipCategoryEntity {
 //    @OneToMany(mappedBy = "category", cascade=CascadeType.ALL, orphanRemoval=true)
 //    List<TipEntity> tips;
 
+
+    public TipCategoryEntity(String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -26,14 +31,6 @@ public class TipCategoryEntity {
     public void setName(String name) {
         this.name = name;
     }
-
-//    public List<TipEntity> getTips() {
-//        return tips;
-//    }
-
-//    public void setTips(List<TipEntity> tips) {
-//        this.tips = tips;
-//    }
 
     @Override
     public String toString() {

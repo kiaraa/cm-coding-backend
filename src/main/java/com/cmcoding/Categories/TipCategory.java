@@ -11,15 +11,19 @@ public class TipCategory {
     private String name;
     private List<Tip> tips;
 
-    public TipCategory() {
+    public TipCategory(String name) {
+        this.name = name;
     }
-
-
 
     public TipCategory(Integer id, String name, List<Tip> tips) {
         this.id = id;
         this.name = name;
         this.tips = tips;
+    }
+
+    public TipCategory(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public List<Tip> getTips() {

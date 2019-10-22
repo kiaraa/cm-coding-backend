@@ -22,7 +22,7 @@ public class CategoryControllerTest {
         Tip tip = categoryController.getSingleTipById(1,2);
 
         Assertions.assertThat(tip.getId()).isEqualTo(2);
-        Assertions.assertThat(tip.getTip().equals("test tip"));
+        Assertions.assertThat(tip.getTip().equals("Don't break em!"));
     }
 
     @Test
@@ -32,7 +32,7 @@ public class CategoryControllerTest {
         Tip tip = categoryController.getSingleTipById(1,3);
 
         Assertions.assertThat(tip.getId()).isEqualTo(3);
-        Assertions.assertThat(tip.getTip()).isEqualTo("test tip 2");
+        Assertions.assertThat(tip.getTip()).isEqualTo("Osteoperosis is a bitch");
     }
 
     @Test
@@ -62,21 +62,21 @@ public class CategoryControllerTest {
         TipCategory cat2 = categoryController.getCategoryById(2);
 
         Assertions.assertThat(cat1.getId()).isEqualTo(1);
-        Assertions.assertThat(cat1.getName()).isEqualTo("Test category 1");
-        Assertions.assertThat(cat1.getTips().size()).isEqualTo(1);
+        Assertions.assertThat(cat1.getName()).isEqualTo("Bones");
+        Assertions.assertThat(cat1.getTips().size()).isEqualTo(3);
 
-        Assertions.assertThat(cat1.getTips().get(0).getId()).isEqualTo(4);
-        Assertions.assertThat(cat1.getTips().get(0).getTip()).isEqualTo("This is altogether too many things in this line.");
+        Assertions.assertThat(cat1.getTips().get(0).getId()).isEqualTo(1);
+        Assertions.assertThat(cat1.getTips().get(0).getTip()).isEqualTo("Drink milk");
 
         Assertions.assertThat(cat2.getId()).isEqualTo(2);
-        Assertions.assertThat(cat2.getName()).isEqualTo("Test category 2");
+        Assertions.assertThat(cat2.getName()).isEqualTo("General Health");
         Assertions.assertThat(cat2.getTips().size()).isEqualTo(2);
 
-        Assertions.assertThat(cat2.getTips().get(0).getId()).isEqualTo(3);
-        Assertions.assertThat(cat2.getTips().get(0).getTip()).isEqualTo("This is altogether too many things in this other line.");
+        Assertions.assertThat(cat2.getTips().get(0).getId()).isEqualTo(4);
+        Assertions.assertThat(cat2.getTips().get(0).getTip()).isEqualTo("Eat vegetables");
 
         Assertions.assertThat(cat2.getTips().get(1).getId()).isEqualTo(5);
-        Assertions.assertThat(cat2.getTips().get(1).getTip()).isEqualTo("You absolute pedant.");
+        Assertions.assertThat(cat2.getTips().get(1).getTip()).isEqualTo("Eat fruits");
     }
 
     @Test
@@ -86,17 +86,17 @@ public class CategoryControllerTest {
         List<Tip> category1Tips = categoryController.getCategoryTips(1);
         List<Tip> category2Tips = categoryController.getCategoryTips(2);
 
-        Assertions.assertThat(category1Tips.size()).isEqualTo(1);
-        Assertions.assertThat(category1Tips.get(0).getId()).isEqualTo(4);
-        Assertions.assertThat(category1Tips.get(0).getTip()).isEqualTo("This is altogether too many things in this line.");
+        Assertions.assertThat(category1Tips.size()).isEqualTo(3);
+        Assertions.assertThat(category1Tips.get(0).getId()).isEqualTo(1);
+        Assertions.assertThat(category1Tips.get(0).getTip()).isEqualTo("Drink milk");
 
         Assertions.assertThat(category2Tips.size()).isEqualTo(2);
 
-        Assertions.assertThat(category2Tips.get(0).getId()).isEqualTo(3);
-        Assertions.assertThat(category2Tips.get(0).getTip()).isEqualTo("This is altogether too many things in this other line.");
+        Assertions.assertThat(category2Tips.get(0).getId()).isEqualTo(4);
+        Assertions.assertThat(category2Tips.get(0).getTip()).isEqualTo("Eat vegetables");
 
         Assertions.assertThat(category2Tips.get(1).getId()).isEqualTo(5);
-        Assertions.assertThat(category2Tips.get(1).getTip()).isEqualTo("You absolute pedant.");
+        Assertions.assertThat(category2Tips.get(1).getTip()).isEqualTo("Eat fruits");
 
     }
 
@@ -106,8 +106,9 @@ public class CategoryControllerTest {
 
         List<TipCategory> categories = categoryController.getAllCategories();
 
-        TipCategory example1 = new TipCategory(1, "General health", Arrays.asList(new Tip(1, "Eat vegetables"), new Tip(2, "Eat fruits")));
-        TipCategory example2 = new TipCategory(2, "Bones", Arrays.asList(new Tip(3, "Drink milk"), new Tip(4, "Don't break em!"), new Tip(5, "Osteoperosis is a bitch")));
+        TipCategory example1 = new TipCategory(1, "Bones", Arrays.asList(new Tip(1, "Drink milk"), new Tip(2, "Don't break em!"), new Tip(3, "Osteoperosis is a bitch")));
+        TipCategory example2 = new TipCategory(2, "General Health", Arrays.asList(new Tip(4, "Eat vegetables"), new Tip(5, "Eat fruits")));
+
         Assertions.assertThat(categories).isEqualTo(Arrays.asList(example1, example2));
 
 

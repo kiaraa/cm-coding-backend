@@ -12,46 +12,44 @@ import java.util.List;
 @RestController
 public class CategoryController {
 
-    TipCategory cat1 = new TipCategory(1, "Test category 1", Arrays.asList(new Tip(4, "This is altogether too many things in this line.")));
-    TipCategory cat2 = new TipCategory(2, "Test category 2", Arrays.asList(new Tip(3, "This is altogether too many things in this other line."), new Tip(5, "You absolute pedant.")));
+    TipCategory cat1 = new TipCategory(1, "Bones", Arrays.asList(new Tip(1, "Drink milk"), new Tip(2, "Don't break em!"), new Tip(3, "Osteoperosis is a bitch")));
+    TipCategory cat2 = new TipCategory(2, "General Health", Arrays.asList(new Tip(4, "Eat vegetables"), new Tip(5, "Eat fruits")));
 
     @GetMapping("/categories/{catId}/tips/{tipId}")
     public Tip getSingleTipById(@PathVariable("catId") int catId, @PathVariable("tipId") int tipId) {
-        if (tipId == 2) {
-            return new Tip(tipId, "test tip");
+        List<TipCategory> allCategories = getAllCategories();
+        for (TipCategory category : allCategories) {
+            for (Tip tip : category.getTips()) {
+                if (tip.getId() == tipId) {
+                    return tip;
+                }
+            }
         }
-        else {
-            return new Tip(3, "test tip 2");
-        }
+        return null;
     }
 
     @GetMapping(value = "/categories/{id}")
     public TipCategory getCategoryById(@PathVariable("id") int catId) {
-        if (catId == 1) {
-            return cat1;
+        List<TipCategory> allCategories = getAllCategories();
+        for (TipCategory category : allCategories) {
+            if (category.getId() == catId) {
+                return category;
+            }
         }
-        else {
-            return cat2;
-        }
+        return null;
     }
 
     @GetMapping(value = "/categories/{id}/tips")
     public List<Tip> getCategoryTips(@PathVariable("id") int catId) {
-        if (catId == 1) {
-            return cat1.getTips();
-        }
-        else {
-            return cat2.getTips();
-        }
+        TipCategory category = getCategoryById(catId);
+        return category.getTips();
     }
 
     @GetMapping("/categories")
     public List<TipCategory> getAllCategories() {
-        TipCategory example1 = new TipCategory(1, "General health", Arrays.asList(new Tip(1, "Eat vegetables"), new Tip(2, "Eat fruits")));
-        TipCategory example2 = new TipCategory(2, "Bones", Arrays.asList(new Tip(3, "Drink milk"), new Tip(4, "Don't break em!"), new Tip(5, "Osteoperosis is a bitch")));
         List<TipCategory> allCategories = new ArrayList<>();
-        allCategories.add(example1);
-        allCategories.add(example2);
+        allCategories.add(cat1);
+        allCategories.add(cat2);
         return allCategories;
     }
 }

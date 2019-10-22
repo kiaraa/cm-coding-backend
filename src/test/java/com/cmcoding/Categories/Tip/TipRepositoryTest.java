@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.assertj.core.api.Assertions.*;
+
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class TipRepositoryTest {
@@ -16,22 +18,46 @@ public class TipRepositoryTest {
 
     @Test
     public void saveATipAndRetrieveIt() {
-        Tip tip = new Tip("Eat a lot of veggies.");
+        String tipMessage = "Eat a lot of veggies.";
 
-        Tip savedTip = tipRepository.save(tip);
+        Tip savedTip = tipRepository.save(tipMessage);
 
-        Assertions.assertThat(savedTip.getTip()).isEqualTo(tip.getTip());
-        Assertions.assertThat(savedTip.getId()).isNotNull();
+        assertThat(savedTip.getTip()).isEqualTo(tipMessage);
+        assertThat(savedTip.getId()).isNotNull();
     }
 
     @Test
     public void canGetSavedTips() {
-        Tip tip = new Tip("Eat a lot of veggies.");
+        String tipMessage = "Eat a lot of veggies.";
 
-        Tip savedTip = tipRepository.save(tip);
+        Tip savedTip = tipRepository.save(tipMessage);
 
         Tip retrievedTip = tipRepository.retreiveById(savedTip.getId());
 
-        Assertions.assertThat(retrievedTip).isEqualTo(savedTip);
+        assertThat(retrievedTip).isEqualTo(savedTip);
+    }
+
+    @Test
+    public void canEditSavedTips() {
+        String initialTipMessage = "Don't bother looking before crossing the street.";
+
+        String correctString = "Always look both ways before crossing the street.";
+        Tip savedTip = tipRepository.save(initialTipMessage);
+        int tipId = savedTip.getId();
+        Tip editedTip = tipRepository.edit(tipId, correctString);
+        Tip tipWithSameId = tipRepository.retreiveById(tipId);
+
+        assertThat(editedTip.getTip()).isEqualTo(tipWithSameId.getTip());
+        assertThat(editedTip.getTip()).isEqualTo(correctString);
+    }
+
+    @Test
+    public void canDeleteTips() {
+        Tip tipToDelete = tipRepository.save("Delete this tip.");
+
+        int tipId = tipToDelete.getId();
+        Tip deletedTip = tipRepository.delete(tipId);
+
+        assertThat(tipRepository.retreiveById(tipId)).isNull();
     }
 }
