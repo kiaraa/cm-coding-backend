@@ -24,34 +24,34 @@ public class CategoryControllerIT {
         Assertions.assertThat(response).isEqualToIgnoringWhitespace("[\n" +
                 "  {\n" +
                 "    \"id\" : 1,\n" +
-                "    \"name\" : \"General health\",\n" +
+                "    \"name\" : \"Bones\",\n" +
                 "    \"tips\":[\n" +
                 "      {\n" +
                 "        \"id\": 1,\n" +
-                "        \"tip\": \"Eat vegetables\"\n" +
+                "        \"tip\": \"Drink milk\"\n" +
                 "      },\n" +
                 "      {\n" +
                 "        \"id\": 2,\n" +
-                "        \"tip\": \"Eat fruits\"\n" +
+                "        \"tip\": \"Don't break em!\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"id\": 3,\n" +
+                "        \"tip\": \"Osteoperosis is a bitch\"\n" +
                 "      }\n" +
                 "    ]\n" +
                 "  },\n" +
                 "  {\n" +
                 "    \"id\":2,\n" +
-                "    \"name\": \"Bones\",\n" +
+                "    \"name\": \"General Health\",\n" +
                 "    \"tips\":[\n" +
                 "      {\n" +
-                "        \"id\": 3,\n" +
-                "        \"tip\": \"Drink milk\"\n" +
-                "      },\n" +
-                "      {\n" +
                 "        \"id\": 4,\n" +
-                "        \"tip\": \"Don't break em!\"\n" +
+                "        \"tip\": \"Eat vegetables\"\n" +
                 "      },\n" +
                 "      {\n" +
                 "        \"id\": 5,\n" +
-                "        \"tip\": \"Osteoperosis is a bitch\"\n" +
-                "      }\n" +
+                "        \"tip\": \"Eat fruits\"\n" +
+                "      }" +
                 "    ]\n" +
                 "  }\n" +
                 "]");
@@ -64,11 +64,19 @@ public class CategoryControllerIT {
         String response = rt.getForObject(url, String.class);
         Assertions.assertThat(response).isEqualToIgnoringWhitespace("{\n" +
                 "  \"id\" : 1,\n" +
-                "  \"name\" : \"Test category 1\",\n" +
+                "  \"name\" : \"Bones\",\n" +
                 "  \"tips\":[\n" +
                 "    {\n" +
-                "      \"id\": 4,\n" +
-                "      \"tip\": \"This is altogether too many things in this line.\"\n" +
+                "      \"id\": 1,\n" +
+                "      \"tip\": \"Drink milk\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": 2,\n" +
+                "      \"tip\": \"Don't break em!\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": 3,\n" +
+                "      \"tip\": \"Osteoperosis is a bitch\"\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}");
@@ -81,12 +89,12 @@ public class CategoryControllerIT {
         String response = rt.getForObject(url, String.class);
         Assertions.assertThat(response).isEqualToIgnoringWhitespace("[\n" +
                 "  {\n" +
-                "    \"id\": 3,\n" +
-                "    \"tip\": \"This is altogether too many things in this other line.\"\n" +
+                "    \"id\": 4,\n" +
+                "    \"tip\": \"Eat vegetables\"\n" +
                 "  },\n" +
                 "  {\n" +
                 "  \"id\": 5,\n" +
-                "  \"tip\": \"You absolute pedant.\"\n" +
+                "  \"tip\": \"Eat fruits\"\n" +
                 "  }\n" +
                 "]");
     }
@@ -97,8 +105,8 @@ public class CategoryControllerIT {
         String url = "http://localhost:" + port + "/categories/2/tips/5";
         String response = rt.getForObject(url, String.class);
         Assertions.assertThat(response).isEqualToIgnoringWhitespace("{\n" +
-                "  \"id\": 3,\n" +
-                "  \"tip\": \"test tip 2\"\n" +
+                "  \"id\": 5,\n" +
+                "  \"tip\": \"Eat fruits\"\n" +
                 "}");
     }
 }

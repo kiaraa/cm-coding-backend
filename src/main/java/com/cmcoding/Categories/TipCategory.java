@@ -1,7 +1,6 @@
 package com.cmcoding.Categories;
 
 import com.cmcoding.Categories.Tip.Tip;
-
 import java.util.List;
 import java.util.Objects;
 

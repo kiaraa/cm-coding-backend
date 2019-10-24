@@ -15,6 +15,10 @@ public class Tip {
         this.tip = tip;
     }
 
+    public Tip(String tip) {
+        this.tip = tip;
+    }
+
     public Integer getId() {
         return id;
     }

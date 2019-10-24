@@ -1,4 +1,6 @@
 package com.cmcoding.Categories.Tip;
+import com.cmcoding.Categories.TipCategoryEntity;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,9 +11,9 @@ public class TipEntity {
     private Integer id;
     private String tip;
 
-//    @ManyToOne
-//    @JoinColumn(name="categoryId_fk")
-//    private TipCategoryEntity category;
+    @ManyToOne
+    @JoinColumn(name="category")
+    private TipCategoryEntity category;
 
     public TipEntity(String tip) {
         this.tip = tip;
@@ -33,20 +35,20 @@ public class TipEntity {
         this.tip = tip;
     }
 
-//    public TipCategoryEntity getCategory() {
-//        return category;
-//    }
+    public TipCategoryEntity getCategory() {
+        return category;
+    }
 
-//    public void setCategory(TipCategoryEntity category) {
-//        this.category = category;
-//    }
+    public void setCategory(TipCategoryEntity category) {
+        this.category = category;
+    }
 
     @Override
     public String toString() {
         return "TipEntity{" +
                 "id=" + id +
                 ", tip='" + tip + '\'' +
-//                ", category=" + category +
+                ", category=" + category +
                 '}';
     }
 }

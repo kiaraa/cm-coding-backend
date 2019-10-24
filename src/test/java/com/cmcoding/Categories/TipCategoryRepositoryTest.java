@@ -59,4 +59,5 @@ public class TipCategoryRepositoryTest {
 
         assertThat(tipCategoryRepository.retrieveById(categoryId)).isNull();
     }
+
 }

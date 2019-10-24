@@ -1,5 +1,9 @@
 package com.cmcoding.Categories;
+import com.cmcoding.Categories.Tip.TipEntity;
+
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 public class TipCategoryEntity {
@@ -8,12 +12,21 @@ public class TipCategoryEntity {
     private Integer id;
     private String name;
 
-//    @OneToMany(mappedBy = "category", cascade=CascadeType.ALL, orphanRemoval=true)
-//    List<TipEntity> tips;
+    @OneToMany(mappedBy = "category", cascade=CascadeType.ALL, orphanRemoval=true)
+    List<TipEntity> tips;
 
+    public TipCategoryEntity(String name, List<TipEntity> tips) {
+        this.name = name;
+        this.tips = tips;
+    }
 
     public TipCategoryEntity(String name) {
         this.name = name;
+    }
+
+    public TipCategoryEntity(String name, TipEntity tipEntity) {
+        this.name = name;
+        this.tips = Arrays.asList(tipEntity);
     }
 
     public Integer getId() {
@@ -32,12 +45,20 @@ public class TipCategoryEntity {
         this.name = name;
     }
 
+    public List<TipEntity> getTips() {
+        return tips;
+    }
+
+    public void setTips(List<TipEntity> tips) {
+        this.tips = tips;
+    }
+
     @Override
     public String toString() {
         return "TipCategoryEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-//                ", tips=" + tips +
+                ", tips=" + tips +
                 '}';
     }
 }
