@@ -4,18 +4,25 @@ import java.util.Objects;
 
 public class Tip {
 
-    private int id;
+    private Integer id;
     private String tip;
+    private Integer categoryId;
 
     public Tip() {
     }
 
-    public Tip(int id, String tip) {
+    public Tip(Integer id, String tip) {
         this.id = id;
         this.tip = tip;
     }
 
-    public int getId() {
+    public Tip(Integer id, String tip, Integer categoryId) {
+        this.id = id;
+        this.tip = tip;
+        this.categoryId = categoryId;
+    }
+
+    public Integer getId() {
         return id;
     }
 
@@ -23,19 +30,23 @@ public class Tip {
         return tip;
     }
 
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tip tip1 = (Tip) o;
-        return id == tip1.id &&
-                Objects.equals(tip, tip1.tip);
+        return Objects.equals(id, tip1.id) &&
+                Objects.equals(tip, tip1.tip) &&
+                Objects.equals(categoryId, tip1.categoryId);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, tip);
+        return Objects.hash(id, tip, categoryId);
     }
 
     @Override
@@ -43,6 +54,7 @@ public class Tip {
         return "Tip{" +
                 "id=" + id +
                 ", tip='" + tip + '\'' +
+                ", categoryId=" + categoryId +
                 '}';
     }
 }

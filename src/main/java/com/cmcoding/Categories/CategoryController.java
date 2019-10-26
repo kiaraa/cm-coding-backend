@@ -1,57 +1,57 @@
 package com.cmcoding.Categories;
 
 import com.cmcoding.Categories.Tip.Tip;
+import com.cmcoding.Categories.Tip.TipRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
 public class CategoryController {
 
-    TipCategory cat1 = new TipCategory(1, "Test category 1", Arrays.asList(new Tip(4, "This is altogether too many things in this line.")));
-    TipCategory cat2 = new TipCategory(2, "Test category 2", Arrays.asList(new Tip(3, "This is altogether too many things in this other line."), new Tip(5, "You absolute pedant.")));
+    private final TipCategoryRepository tipCategoryRepository;
+    private final TipRepository tipRepository;
+
+    public CategoryController(TipCategoryRepository tipCategoryRepository, TipRepository tipRepository) {
+        this.tipCategoryRepository = tipCategoryRepository;
+        this.tipRepository = tipRepository;
+    }
 
     @GetMapping("/categories/{catId}/tips/{tipId}")
-    public Tip getSingleTipById(@PathVariable("catId") int catId, @PathVariable("tipId") int tipId) {
-        if (tipId == 2) {
-            return new Tip(tipId, "test tip");
-        }
-        else {
-            return new Tip(3, "test tip 2");
-        }
+    public Tip getSingleTipById(@PathVariable("catId") Integer catId, @PathVariable("tipId") Integer tipId) {
+        Tip tip = tipRepository.retreiveById(tipId);
+
+        throwExceptionIfNotFound(tip, catId);
+
+        return tip;
     }
 
     @GetMapping(value = "/categories/{id}")
     public TipCategory getCategoryById(@PathVariable("id") int catId) {
-        if (catId == 1) {
-            return cat1;
-        }
-        else {
-            return cat2;
-        }
+        TipCategory tipCategory = tipCategoryRepository.retrieveById(catId);
+        return tipCategory;
     }
 
     @GetMapping(value = "/categories/{id}/tips")
     public List<Tip> getCategoryTips(@PathVariable("id") int catId) {
-        if (catId == 1) {
-            return cat1.getTips();
-        }
-        else {
-            return cat2.getTips();
-        }
+        TipCategory tipCategory = tipCategoryRepository.retrieveById(catId);
+        return tipCategory.getTips();
     }
 
     @GetMapping("/categories")
     public List<TipCategory> getAllCategories() {
-        TipCategory example1 = new TipCategory(1, "General health", Arrays.asList(new Tip(1, "Eat vegetables"), new Tip(2, "Eat fruits")));
-        TipCategory example2 = new TipCategory(2, "Bones", Arrays.asList(new Tip(3, "Drink milk"), new Tip(4, "Don't break em!"), new Tip(5, "Osteoperosis is a bitch")));
-        List<TipCategory> allCategories = new ArrayList<>();
-        allCategories.add(example1);
-        allCategories.add(example2);
-        return allCategories;
+        return tipCategoryRepository.findAll();
+    }
+
+    private void throwExceptionIfNotFound(Tip tip, Integer catId) {
+        if (tip == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No tip with that ID exists.");
+        }
+        if (!tip.getCategoryId().equals(catId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No tip with that ID exists within that category.");
+        }
     }
 }
