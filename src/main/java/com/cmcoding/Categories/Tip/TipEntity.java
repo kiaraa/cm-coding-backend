@@ -15,6 +15,9 @@ public class TipEntity {
     @JoinColumn(name="category")
     private TipCategoryEntity category;
 
+    public TipEntity() {
+    }
+
     public TipEntity(String tip) {
         this.tip = tip;
     }

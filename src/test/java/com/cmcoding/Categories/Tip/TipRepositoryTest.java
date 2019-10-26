@@ -9,11 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.EntityManager;
+
 import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class TipRepositoryTest {
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     private TipRepository tipRepository;
@@ -41,6 +46,8 @@ public class TipRepositoryTest {
         String tipMessage = "Eat a lot of veggies.";
 
         Tip savedTip = tipRepository.save(tipMessage, categoryId);
+
+        entityManager.clear();
 
         Tip retrievedTip = tipRepository.retreiveById(savedTip.getId());
 

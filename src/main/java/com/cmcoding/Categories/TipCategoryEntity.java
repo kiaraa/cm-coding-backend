@@ -17,6 +17,9 @@ public class TipCategoryEntity {
     @OneToMany(mappedBy = "category", cascade=CascadeType.ALL, orphanRemoval=true)
     List<TipEntity> tips;
 
+    public TipCategoryEntity() {
+    }
+
     public TipCategoryEntity(String name) {
         this.name = name;
         this.tips = new ArrayList<>();

@@ -4,7 +4,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.persistence.EntityManager;
+import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -14,6 +18,9 @@ public class TipCategoryRepositoryTest {
 
     @Autowired
     private TipCategoryRepository tipCategoryRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Test
     public void canSaveCategoryAndRetrieveIt() {
@@ -30,6 +37,8 @@ public class TipCategoryRepositoryTest {
         String categoryName = "Health Advice";
 
         TipCategory savedTipCategory = tipCategoryRepository.save(categoryName);
+
+        entityManager.clear();
 
         TipCategory retrievedTipCategory = tipCategoryRepository.retrieveById(savedTipCategory.getId());
 
