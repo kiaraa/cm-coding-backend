@@ -1,10 +1,16 @@
 package com.cmcoding.Categories;
 
 import com.cmcoding.Categories.Tip.Tip;
+import com.cmcoding.Categories.Tip.TipRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,105 +19,115 @@ import java.util.List;
 @RunWith(JUnit4.class)
 public class CategoryControllerTest {
 
+    private CategoryController categoryController;
+
+    private TipCategoryRepository tipCategoryRepository;
+    private TipRepository tipRepository;
+
+    @Before
+    public void setUp() throws Exception {
+        tipCategoryRepository = Mockito.mock(TipCategoryRepository.class);
+        tipRepository = Mockito.mock(TipRepository.class);
+
+        categoryController = new CategoryController(tipCategoryRepository, tipRepository);
+    }
+
     @Test
     public void testGetTip(){
-        CategoryController categoryController = new CategoryController();
+        Tip tip = new Tip(2, "AH!", 1);
+        Mockito.when(tipRepository.retreiveById(2)).thenReturn(tip);
 
-        Tip tip = categoryController.getSingleTipById(1,2);
+        Tip response = categoryController.getSingleTipById(1,2);
 
-        Assertions.assertThat(tip.getId()).isEqualTo(2);
-        Assertions.assertThat(tip.getTip().equals("Don't break em!"));
+        Assertions.assertThat(response.getId()).isEqualTo(2);
+        Assertions.assertThat(response.getCategoryId()).isEqualTo(1);
+        Assertions.assertThat(response.getTip()).isEqualTo("AH!");
+    }
+
+    @Test
+    public void testGetTipThrowsExceptionIfTheTipDoesntExist() {
+        Mockito.when(tipRepository.retreiveById(2)).thenReturn(null);
+
+        try {
+            Tip response = categoryController.getSingleTipById(1,2);
+            Assertions.fail("Expecting exception");
+        } catch (ResponseStatusException e) {
+            Assertions.assertThat(e.getMessage()).contains("No tip with that ID exists.");
+            Assertions.assertThat(e.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Test
+    public void testGetTipThrowsExceptionIfCategoryIdDoesNotMatch(){
+        Tip tip = new Tip(2, "AH!", 3);
+        Mockito.when(tipRepository.retreiveById(2)).thenReturn(tip);
+
+        try {
+            Tip response = categoryController.getSingleTipById(1,2);
+            Assertions.fail("Expecting exception");
+        } catch (ResponseStatusException e) {
+            Assertions.assertThat(e.getMessage()).contains("No tip with that ID exists within that category.");
+            Assertions.assertThat(e.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Test
     public void testGetTipDifferentId(){
-        CategoryController categoryController = new CategoryController();
+        Tip tip = new Tip(3, "EEP!", 2);
+        Mockito.when(tipRepository.retreiveById(3)).thenReturn(tip);
 
-        Tip tip = categoryController.getSingleTipById(1,3);
+        Tip response = categoryController.getSingleTipById(2,3);
 
-        Assertions.assertThat(tip.getId()).isEqualTo(3);
-        Assertions.assertThat(tip.getTip()).isEqualTo("Osteoperosis is a bitch");
+        Assertions.assertThat(response.getId()).isEqualTo(3);
+        Assertions.assertThat(response.getCategoryId()).isEqualTo(2);
+        Assertions.assertThat(response.getTip()).isEqualTo("EEP!");
     }
 
     @Test
     public void testGetCategoryReturnsCategory(){
-        CategoryController categoryController = new CategoryController();
+        List<Tip> tips = Arrays.asList(new Tip(1,"Pet every day", 1), new Tip(2, "Give them bread sometimes", 1),  new Tip(3, "Kiss kiss", 1));
+        TipCategory category = new TipCategory(1, "Cat Care", tips);
+        Mockito.when(tipCategoryRepository.retrieveById(1)).thenReturn(category);
 
-        TipCategory category = categoryController.getCategoryById(1);
+        TipCategory response = categoryController.getCategoryById(1);
 
-        Assertions.assertThat(category).isExactlyInstanceOf(TipCategory.class);
+        Assertions.assertThat(response.getId()).isEqualTo(category.getId());
+        Assertions.assertThat(response.getTips()).isEqualTo(category.getTips());
+        Assertions.assertThat(response.getName()).isEqualTo(category.getName());
     }
 
     @Test
     public void testGetCategoryReturnsDifferentCategories(){
-        CategoryController categoryController = new CategoryController();
+        List<Tip> tips = Arrays.asList(new Tip(1,"Pet every day", 1), new Tip(2, "Give them bread sometimes", 1),  new Tip(3, "Kiss kiss", 1));
+        TipCategory category = new TipCategory(1, "Cat Care", tips);
+        Mockito.when(tipCategoryRepository.retrieveById(1)).thenReturn(category);
 
-        TipCategory category1 = categoryController.getCategoryById(1);
-        TipCategory category2 = categoryController.getCategoryById(2);
+        List<Tip> otherTips = Arrays.asList(new Tip(4, "Drink a lot of water.", 2));
+        TipCategory otherCategory = new TipCategory(2, "Health", otherTips);
+        Mockito.when(tipCategoryRepository.retrieveById(2)).thenReturn(otherCategory);
 
-        Assertions.assertThat(category1.getId()).isNotEqualTo(category2.getId());
-    }
-
-    @Test
-    public void testGetCategoryReturnsGoodStubs() {
-        CategoryController categoryController = new CategoryController();
-
-        TipCategory cat1 = categoryController.getCategoryById(1);
-        TipCategory cat2 = categoryController.getCategoryById(2);
-
-        Assertions.assertThat(cat1.getId()).isEqualTo(1);
-        Assertions.assertThat(cat1.getName()).isEqualTo("Bones");
-        Assertions.assertThat(cat1.getTips().size()).isEqualTo(3);
-
-        Assertions.assertThat(cat1.getTips().get(0).getId()).isEqualTo(1);
-        Assertions.assertThat(cat1.getTips().get(0).getTip()).isEqualTo("Drink milk");
-
-        Assertions.assertThat(cat2.getId()).isEqualTo(2);
-        Assertions.assertThat(cat2.getName()).isEqualTo("General Health");
-        Assertions.assertThat(cat2.getTips().size()).isEqualTo(2);
-
-        Assertions.assertThat(cat2.getTips().get(0).getId()).isEqualTo(4);
-        Assertions.assertThat(cat2.getTips().get(0).getTip()).isEqualTo("Eat vegetables");
-
-        Assertions.assertThat(cat2.getTips().get(1).getId()).isEqualTo(5);
-        Assertions.assertThat(cat2.getTips().get(1).getTip()).isEqualTo("Eat fruits");
+        Assertions.assertThat(category.getId()).isNotEqualTo(otherCategory.getId());
     }
 
     @Test
     public void testGetTipsFromCategory(){
-        CategoryController categoryController = new CategoryController();
+        List<Tip> tips = Arrays.asList(new Tip(1, "Practice", 1), new Tip(2, "Use Google", 1));
+        TipCategory tipCategory = new TipCategory(1, "Coding Advice", tips);
+        Mockito.when(tipCategoryRepository.retrieveById(1)).thenReturn(tipCategory);
 
-        List<Tip> category1Tips = categoryController.getCategoryTips(1);
-        List<Tip> category2Tips = categoryController.getCategoryTips(2);
+        List<Tip> response = categoryController.getCategoryTips(1);
 
-        Assertions.assertThat(category1Tips.size()).isEqualTo(3);
-        Assertions.assertThat(category1Tips.get(0).getId()).isEqualTo(1);
-        Assertions.assertThat(category1Tips.get(0).getTip()).isEqualTo("Drink milk");
-
-        Assertions.assertThat(category2Tips.size()).isEqualTo(2);
-
-        Assertions.assertThat(category2Tips.get(0).getId()).isEqualTo(4);
-        Assertions.assertThat(category2Tips.get(0).getTip()).isEqualTo("Eat vegetables");
-
-        Assertions.assertThat(category2Tips.get(1).getId()).isEqualTo(5);
-        Assertions.assertThat(category2Tips.get(1).getTip()).isEqualTo("Eat fruits");
-
+        Assertions.assertThat(response).isEqualTo(tipCategory.getTips());
     }
 
     @Test
     public void testGetCategories(){
-        CategoryController categoryController = new CategoryController();
+        TipCategory tipCategory1 = new TipCategory(1, "Cooking", Arrays.asList(new Tip(1, "Be creative", 1), new Tip(2, "Use spices", 1)));
+        TipCategory tipCategory2 = new TipCategory(2, "Baking", Arrays.asList(new Tip(3, "Use margarine", 2), new Tip(4, "Let ingredients come to room temperature", 2)));
+        Mockito.when(tipCategoryRepository.findAll()).thenReturn(Arrays.asList(tipCategory1, tipCategory2));
 
-        List<TipCategory> categories = categoryController.getAllCategories();
+        List<TipCategory> response = categoryController.getAllCategories();
 
-        TipCategory example1 = new TipCategory(1, "Bones", Arrays.asList(new Tip(1, "Drink milk"), new Tip(2, "Don't break em!"), new Tip(3, "Osteoperosis is a bitch")));
-        TipCategory example2 = new TipCategory(2, "General Health", Arrays.asList(new Tip(4, "Eat vegetables"), new Tip(5, "Eat fruits")));
-
-        Assertions.assertThat(categories).isEqualTo(Arrays.asList(example1, example2));
-
-
+        Assertions.assertThat(response).containsExactlyInAnyOrder(tipCategory1, tipCategory2);
     }
-
-
-
 }
