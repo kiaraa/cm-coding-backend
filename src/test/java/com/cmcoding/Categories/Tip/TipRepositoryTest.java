@@ -1,5 +1,7 @@
 package com.cmcoding.Categories.Tip;
 
+import com.cmcoding.Categories.TipCategory;
+import com.cmcoding.Categories.TipCategoryRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,11 +18,16 @@ public class TipRepositoryTest {
     @Autowired
     private TipRepository tipRepository;
 
+    @Autowired
+    private TipCategoryRepository tipCategoryRepository;
+
     @Test
     public void saveATipAndRetrieveIt() {
+        TipCategory category = tipCategoryRepository.save("General Health");
+        int categoryId = category.getId();
         String tipMessage = "Eat a lot of veggies.";
 
-        Tip savedTip = tipRepository.save(tipMessage);
+        Tip savedTip = tipRepository.save(tipMessage, categoryId);
 
         assertThat(savedTip.getTip()).isEqualTo(tipMessage);
         assertThat(savedTip.getId()).isNotNull();
@@ -28,9 +35,12 @@ public class TipRepositoryTest {
 
     @Test
     public void canGetSavedTips() {
+        TipCategory category = tipCategoryRepository.save("General Health");
+        int categoryId = category.getId();
+
         String tipMessage = "Eat a lot of veggies.";
 
-        Tip savedTip = tipRepository.save(tipMessage);
+        Tip savedTip = tipRepository.save(tipMessage, categoryId);
 
         Tip retrievedTip = tipRepository.retreiveById(savedTip.getId());
 
@@ -39,10 +49,12 @@ public class TipRepositoryTest {
 
     @Test
     public void canEditSavedTips() {
+        TipCategory category = tipCategoryRepository.save("General Health");
+        int categoryId = category.getId();
         String initialTipMessage = "Don't bother looking before crossing the street.";
 
         String correctString = "Always look both ways before crossing the street.";
-        Tip savedTip = tipRepository.save(initialTipMessage);
+        Tip savedTip = tipRepository.save(initialTipMessage, categoryId);
         int tipId = savedTip.getId();
         Tip editedTip = tipRepository.edit(tipId, correctString);
         Tip tipWithSameId = tipRepository.retreiveById(tipId);
@@ -53,11 +65,14 @@ public class TipRepositoryTest {
 
     @Test
     public void canDeleteTips() {
-        Tip tipToDelete = tipRepository.save("Delete this tip.");
+        TipCategory category = tipCategoryRepository.save("General Health");
+        int categoryId = category.getId();
+        Tip tipToDelete = tipRepository.save("Delete this tip.", categoryId);
 
         int tipId = tipToDelete.getId();
         Tip deletedTip = tipRepository.delete(tipId);
 
         assertThat(tipRepository.retreiveById(tipId)).isNull();
+        assertThat(tipCategoryRepository.retrieveById(categoryId).getTips().size()).isEqualTo(0);
     }
 }

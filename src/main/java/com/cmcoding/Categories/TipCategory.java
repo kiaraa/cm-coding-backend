@@ -1,6 +1,7 @@
 package com.cmcoding.Categories;
 
 import com.cmcoding.Categories.Tip.Tip;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,6 +24,7 @@ public class TipCategory {
     public TipCategory(Integer id, String name) {
         this.id = id;
         this.name = name;
+        this.tips = new ArrayList<>();
     }
 
     public List<Tip> getTips() {

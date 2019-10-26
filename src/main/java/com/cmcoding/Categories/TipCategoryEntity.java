@@ -2,31 +2,24 @@ package com.cmcoding.Categories;
 import com.cmcoding.Categories.Tip.TipEntity;
 
 import javax.persistence.*;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class TipCategoryEntity {
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
+
     private String name;
 
     @OneToMany(mappedBy = "category", cascade=CascadeType.ALL, orphanRemoval=true)
     List<TipEntity> tips;
 
-    public TipCategoryEntity(String name, List<TipEntity> tips) {
-        this.name = name;
-        this.tips = tips;
-    }
-
     public TipCategoryEntity(String name) {
         this.name = name;
-    }
-
-    public TipCategoryEntity(String name, TipEntity tipEntity) {
-        this.name = name;
-        this.tips = Arrays.asList(tipEntity);
+        this.tips = new ArrayList<>();
     }
 
     public Integer getId() {

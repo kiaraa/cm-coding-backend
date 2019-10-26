@@ -12,8 +12,7 @@ public class TipCategoryRepository {
     TipCategoryEntityRepository tipCategoryEntityRepository;
 
     public TipCategory save(String categoryName) {
-        TipCategoryEntity tipCategoryEntity = new TipCategoryEntity(categoryName);
-        TipCategoryEntity savedTipCategoryEntity = tipCategoryEntityRepository.save(tipCategoryEntity);
+        TipCategoryEntity savedTipCategoryEntity = tipCategoryEntityRepository.save(new TipCategoryEntity(categoryName));
         return new TipCategory(savedTipCategoryEntity.getId(), savedTipCategoryEntity.getName());
     }
 

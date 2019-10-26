@@ -19,6 +19,11 @@ public class TipEntity {
         this.tip = tip;
     }
 
+    public TipEntity(String tip, TipCategoryEntity category) {
+        this.tip = tip;
+        this.category = category;
+    }
+
     public Integer getId() {
         return id;
     }
