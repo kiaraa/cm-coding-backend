@@ -9,6 +9,6 @@ public class WelcomeMessageController {
     @GetMapping("/welcome-message")
     public String getWelcomeMessage() {
         System.out.println("Got a welcome-message request.");
-        return "Welcome to the CM-Coding course online companion app.";
+        return "Welcome to the CM-Coding courseonline companion app.";
     }
 }

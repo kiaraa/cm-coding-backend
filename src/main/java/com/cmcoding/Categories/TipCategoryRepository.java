@@ -63,15 +63,4 @@ public class TipCategoryRepository {
         }
         return categoryList;
     }
-
-//    public TipCategory addTip(TipEntity newTipEntity) {
-//        TipCategoryEntity category = newTipEntity.getCategory();
-//        category.getTips().add(newTipEntity);
-//        TipCategoryEntity savedCategoryEntity = tipCategoryEntityRepository.save(category);
-//        List<Tip> tips = new ArrayList<>();
-//        for (TipEntity entity : savedCategoryEntity.getTips()) {
-//            tips.add(new Tip(entity.getId(), entity.getTip(), entity.getCategory().getId()));
-//        }
-//        return new TipCategory(savedCategoryEntity.getId(), savedCategoryEntity.getName(), tips);
-//    }
 }
