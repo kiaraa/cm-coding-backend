@@ -11,6 +11,11 @@ public class Tip {
     public Tip() {
     }
 
+    public Tip(String tip, Integer categoryId) {
+        this.tip = tip;
+        this.categoryId = categoryId;
+    }
+
     public Tip(Integer id, String tip) {
         this.id = id;
         this.tip = tip;

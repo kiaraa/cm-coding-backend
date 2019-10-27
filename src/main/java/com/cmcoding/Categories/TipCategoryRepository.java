@@ -17,19 +17,26 @@ public class TipCategoryRepository {
 
     public TipCategory save(String categoryName) {
         TipCategoryEntity savedTipCategoryEntity = tipCategoryEntityRepository.save(new TipCategoryEntity(categoryName));
-        return new TipCategory(savedTipCategoryEntity.getId(), savedTipCategoryEntity.getName());
+        return new TipCategory(savedTipCategoryEntity.getId(), savedTipCategoryEntity.getName(), new ArrayList<Tip>());
     }
 
     public TipCategory retrieveById(Integer id) {
         try {
             TipCategoryEntity categoryEntity = tipCategoryEntityRepository.findById(id).get();
-            return new TipCategory(categoryEntity.getId(), categoryEntity.getName());
+            List<TipEntity> tipEntities = categoryEntity.getTips();
+            List<Tip> tips = new ArrayList<>();
+
+            for (TipEntity entity : tipEntities) {
+                tips.add(new Tip(entity.getId(), entity.getTip(), entity.getCategory().getId()));
+            }
+
+            return new TipCategory(categoryEntity.getId(), categoryEntity.getName(), tips);
         } catch (NoSuchElementException e){
             return null;
         }
     }
 
-    public TipCategory edit(int id, String name) {
+    public TipCategory editName(int id, String name) {
         TipCategoryEntity savedCategory = tipCategoryEntityRepository.findById(id).get();
         savedCategory.setName(name);
         tipCategoryEntityRepository.save(savedCategory);
@@ -56,4 +63,15 @@ public class TipCategoryRepository {
         }
         return categoryList;
     }
+
+//    public TipCategory addTip(TipEntity newTipEntity) {
+//        TipCategoryEntity category = newTipEntity.getCategory();
+//        category.getTips().add(newTipEntity);
+//        TipCategoryEntity savedCategoryEntity = tipCategoryEntityRepository.save(category);
+//        List<Tip> tips = new ArrayList<>();
+//        for (TipEntity entity : savedCategoryEntity.getTips()) {
+//            tips.add(new Tip(entity.getId(), entity.getTip(), entity.getCategory().getId()));
+//        }
+//        return new TipCategory(savedCategoryEntity.getId(), savedCategoryEntity.getName(), tips);
+//    }
 }

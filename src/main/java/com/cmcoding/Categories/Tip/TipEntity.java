@@ -56,7 +56,7 @@ public class TipEntity {
         return "TipEntity{" +
                 "id=" + id +
                 ", tip='" + tip + '\'' +
-                ", category=" + category +
+               // ", category=" + category +
                 '}';
     }
 }
