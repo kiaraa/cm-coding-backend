@@ -1,13 +1,13 @@
 package com.cmcoding.Categories;
 
 import com.cmcoding.CmCodingBackendApplication;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = CmCodingBackendApplication.class)
@@ -21,7 +21,7 @@ public class CategoryControllerIT {
         RestTemplate rt = new RestTemplate();
         String url = "http://localhost:" + port + "/categories";
         String response = rt.getForObject(url, String.class);
-        Assertions.assertThat(response).isEqualToIgnoringWhitespace("[\n" +
+        assertThat(response).isEqualToIgnoringWhitespace("[\n" +
                 "  {\n" +
                 "    \"id\" : 1,\n" +
                 "    \"name\" : \"Bones\",\n" +
@@ -62,7 +62,7 @@ public class CategoryControllerIT {
         RestTemplate rt = new RestTemplate();
         String url = "http://localhost:" + port + "/categories/1";
         String response = rt.getForObject(url, String.class);
-        Assertions.assertThat(response).isEqualToIgnoringWhitespace("{\n" +
+        assertThat(response).isEqualToIgnoringWhitespace("{\n" +
                 "  \"id\" : 1,\n" +
                 "  \"name\" : \"Bones\",\n" +
                 "  \"tips\":[\n" +
@@ -87,7 +87,7 @@ public class CategoryControllerIT {
         RestTemplate rt = new RestTemplate();
         String url = "http://localhost:" + port + "/categories/2/tips";
         String response = rt.getForObject(url, String.class);
-        Assertions.assertThat(response).isEqualToIgnoringWhitespace("[\n" +
+        assertThat(response).isEqualToIgnoringWhitespace("[\n" +
                 "  {\n" +
                 "    \"id\": 4,\n" +
                 "    \"tip\": \"Eat vegetables\"\n" +
@@ -104,7 +104,7 @@ public class CategoryControllerIT {
         RestTemplate rt = new RestTemplate();
         String url = "http://localhost:" + port + "/categories/2/tips/5";
         String response = rt.getForObject(url, String.class);
-        Assertions.assertThat(response).isEqualToIgnoringWhitespace("{\n" +
+        assertThat(response).isEqualToIgnoringWhitespace("{\n" +
                 "  \"id\": 5,\n" +
                 "  \"tip\": \"Eat fruits\"\n" +
                 "}");
