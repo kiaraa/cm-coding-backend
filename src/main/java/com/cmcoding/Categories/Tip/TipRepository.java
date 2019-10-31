@@ -20,6 +20,7 @@ public class TipRepository {
         TipCategoryEntity tipCategoryEntity = tipCategoryEntityRepository.findById(categoryId).get();
         TipEntity tipEntity = new TipEntity(tipMessage, tipCategoryEntity);
         TipEntity savedTipEntity = tipEntityRepository.save(tipEntity);
+       // tipCategoryRepository.addTip(savedTipEntity);
         return new Tip(savedTipEntity.getId(), savedTipEntity.getTip(), savedTipEntity.getCategory().getId());
     }
 

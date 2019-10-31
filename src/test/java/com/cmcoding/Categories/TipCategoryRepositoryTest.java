@@ -1,14 +1,14 @@
 package com.cmcoding.Categories;
 
+import com.cmcoding.Categories.Tip.Tip;
+import com.cmcoding.Categories.Tip.TipRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
-import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -22,14 +22,30 @@ public class TipCategoryRepositoryTest {
     @Autowired
     private EntityManager entityManager;
 
+    @Autowired
+    private TipRepository tipRepository;
+
     @Test
     public void canSaveCategoryAndRetrieveIt() {
         String categoryName = "General Advice";
-
         TipCategory savedTipCategory = tipCategoryRepository.save(categoryName);
 
         assertThat(savedTipCategory.getName()).isEqualTo(categoryName);
         assertThat(savedTipCategory.getId()).isNotNull();
+    }
+
+    @Test
+    public void canAddTipsToCategoryAndRetrieveThem() {
+        TipCategory savedTipCategory = tipCategoryRepository.save("General Advice");
+
+        Tip newTip1 = tipRepository.save("Have a regular sleep schedule.", savedTipCategory.getId());
+        Tip newTip2 = tipRepository.save("Do your taxes.", savedTipCategory.getId());
+
+        entityManager.clear();
+
+        TipCategory updatedTipCategory = tipCategoryRepository.retrieveById(savedTipCategory.getId());
+
+        assertThat(updatedTipCategory.getTips()).containsExactlyInAnyOrder(newTip1, newTip2);
     }
 
     @Test
@@ -52,7 +68,7 @@ public class TipCategoryRepositoryTest {
         String correctName = "Here is the correct version.";
         TipCategory savedCategory = tipCategoryRepository.save(initialTipName);
         int categoryId = savedCategory.getId();
-        TipCategory editedCategory = tipCategoryRepository.edit(categoryId, correctName);
+        TipCategory editedCategory = tipCategoryRepository.editName(categoryId, correctName);
         TipCategory categoryWithSameId = tipCategoryRepository.retrieveById(categoryId);
 
         assertThat(editedCategory.getName()).isEqualTo(categoryWithSameId.getName());
