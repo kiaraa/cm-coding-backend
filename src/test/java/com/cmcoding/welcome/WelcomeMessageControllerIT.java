@@ -21,7 +21,7 @@ public class WelcomeMessageControllerIT {
     public void greetingShouldReturnDefaultMessage() throws Exception {
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject("http://localhost:" + port + "/welcome-message",  String.class);
-        assertThat(response).contains("Welcome!");
+        assertThat(response).contains("Welcome to the CM-Coding course online companion app.");
     }
 
 }

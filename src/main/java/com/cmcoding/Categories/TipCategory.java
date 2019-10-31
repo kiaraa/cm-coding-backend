@@ -11,6 +11,10 @@ public class TipCategory {
     private String name;
     private List<Tip> tips;
 
+    public TipCategory() {
+        //empty constructor here for json serialization
+    }
+
     public TipCategory(String name) {
         this.name = name;
     }

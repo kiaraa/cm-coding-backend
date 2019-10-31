@@ -1,6 +1,7 @@
 package com.cmcoding.Categories;
 
 import com.cmcoding.CmCodingBackendApplication;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,62 +22,30 @@ public class CategoryControllerIT {
         RestTemplate rt = new RestTemplate();
         String url = "http://localhost:" + port + "/categories";
         String response = rt.getForObject(url, String.class);
-        assertThat(response).isEqualToIgnoringWhitespace("[\n" +
-                "  {\n" +
-                "    \"id\" : 1,\n" +
-                "    \"name\" : \"Bones\",\n" +
-                "    \"tips\":[\n" +
-                "      {\n" +
-                "        \"id\": 1,\n" +
-                "        \"tip\": \"Drink milk\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"id\": 2,\n" +
-                "        \"tip\": \"Don't break em!\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"id\": 3,\n" +
-                "        \"tip\": \"Osteoperosis is a bitch\"\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\":2,\n" +
-                "    \"name\": \"General Health\",\n" +
-                "    \"tips\":[\n" +
-                "      {\n" +
-                "        \"id\": 4,\n" +
-                "        \"tip\": \"Eat vegetables\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"id\": 5,\n" +
-                "        \"tip\": \"Eat fruits\"\n" +
-                "      }" +
-                "    ]\n" +
-                "  }\n" +
-                "]");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        TipCategory[] tipCategories = objectMapper.readValue(response, TipCategory[].class);
+        assertThat(tipCategories.length).isEqualTo(19);
     }
 
     @Test
     public void testGetCategoryById() {
         RestTemplate rt = new RestTemplate();
-        String url = "http://localhost:" + port + "/categories/1";
+        String url = "http://localhost:" + port + "/categories/8";
         String response = rt.getForObject(url, String.class);
         assertThat(response).isEqualToIgnoringWhitespace("{\n" +
-                "  \"id\" : 1,\n" +
-                "  \"name\" : \"Bones\",\n" +
-                "  \"tips\":[\n" +
+                "  \"id\": 8,\n" +
+                "  \"name\": \"Respitory and Hem/Lymph Systems, Mediastinum/Diaphragm\",\n" +
+                "  \"tips\": [\n" +
                 "    {\n" +
-                "      \"id\": 1,\n" +
-                "      \"tip\": \"Drink milk\"\n" +
+                "      \"id\": 48,\n" +
+                "      \"tip\": \"Make sure to reread the ICD-10 guidelines for this chapter and give yourself a clue as to the diagnoses that have guidelines (by putting an asterisk or star next to them).\",\n" +
+                "      \"categoryId\": 8\n" +
                 "    },\n" +
                 "    {\n" +
-                "      \"id\": 2,\n" +
-                "      \"tip\": \"Don't break em!\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": 3,\n" +
-                "      \"tip\": \"Osteoperosis is a bitch\"\n" +
+                "      \"id\": 49,\n" +
+                "      \"tip\": \"Lung Transplant- highlight the 3 stages Removal, Backbench work and Insertion.\",\n" +
+                "      \"categoryId\": 8\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}");
@@ -85,28 +54,31 @@ public class CategoryControllerIT {
     @Test
     public void testGetCategoryIdTips(){
         RestTemplate rt = new RestTemplate();
-        String url = "http://localhost:" + port + "/categories/2/tips";
+        String url = "http://localhost:" + port + "/categories/8/tips";
         String response = rt.getForObject(url, String.class);
         assertThat(response).isEqualToIgnoringWhitespace("[\n" +
-                "  {\n" +
-                "    \"id\": 4,\n" +
-                "    \"tip\": \"Eat vegetables\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "  \"id\": 5,\n" +
-                "  \"tip\": \"Eat fruits\"\n" +
-                "  }\n" +
-                "]");
+                "    {\n" +
+                "      \"id\": 48,\n" +
+                "      \"tip\": \"Make sure to reread the ICD-10 guidelines for this chapter and give yourself a clue as to the diagnoses that have guidelines (by putting an asterisk or star next to them).\",\n" +
+                "      \"categoryId\": 8\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": 49,\n" +
+                "      \"tip\": \"Lung Transplant- highlight the 3 stages Removal, Backbench work and Insertion.\",\n" +
+                "      \"categoryId\": 8\n" +
+                "    }\n" +
+                "  ]");
     }
 
     @Test
     public void getTipById(){
         RestTemplate rt = new RestTemplate();
-        String url = "http://localhost:" + port + "/categories/2/tips/5";
+        String url = "http://localhost:" + port + "/categories/8/tips/49";
         String response = rt.getForObject(url, String.class);
         assertThat(response).isEqualToIgnoringWhitespace("{\n" +
-                "  \"id\": 5,\n" +
-                "  \"tip\": \"Eat fruits\"\n" +
-                "}");
+                "      \"id\": 49,\n" +
+                "      \"tip\": \"Lung Transplant- highlight the 3 stages Removal, Backbench work and Insertion.\",\n" +
+                "      \"categoryId\": 8\n" +
+                "    }");
     }
 }
