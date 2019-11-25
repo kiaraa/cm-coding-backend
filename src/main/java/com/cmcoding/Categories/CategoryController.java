@@ -3,9 +3,7 @@ package com.cmcoding.Categories;
 import com.cmcoding.Categories.Tip.Tip;
 import com.cmcoding.Categories.Tip.TipRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
@@ -52,6 +50,22 @@ public class CategoryController {
         }
         if (!tip.getCategoryId().equals(catId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No tip with that ID exists within that category.");
+        }
+    }
+
+    @PostMapping("/categories/{catId}/tips/{tipId}")
+    public Tip editTip(@PathVariable("tipId") Integer id, @RequestBody Tip newTipEdit) throws IdentityMismatchException {
+        if (!id.equals(newTipEdit.getId())) {
+            throw new IdentityMismatchException("The id in the url and the id of the tip do not match.");
+        }
+        Tip editedTip = tipRepository.edit(newTipEdit.getId(), newTipEdit.getTip());
+        return editedTip;
+    }
+
+    public static class IdentityMismatchException extends RuntimeException {
+
+        public IdentityMismatchException(String message) {
+            super(message);
         }
     }
 }

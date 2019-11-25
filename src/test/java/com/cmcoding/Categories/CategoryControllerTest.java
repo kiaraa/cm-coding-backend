@@ -15,6 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.fail;
+
 
 @RunWith(JUnit4.class)
 public class CategoryControllerTest {
@@ -129,5 +131,28 @@ public class CategoryControllerTest {
         List<TipCategory> response = categoryController.getAllCategories();
 
         Assertions.assertThat(response).containsExactlyInAnyOrder(tipCategory1, tipCategory2);
+    }
+
+    @Test
+    public void testEditTip()    {
+        Tip tip = new Tip(1, "Practice");
+        Tip editedTip = new Tip(1, "Edited" );
+        Mockito.when(tipRepository.edit(1, "Edited")).thenReturn(editedTip);
+
+        Tip response = categoryController.editTip(1, editedTip);
+
+        Assertions.assertThat(response).isEqualTo(editedTip);
+    }
+
+    @Test
+    public void throwsExceptionWhenIdsMismatch(){
+        Tip tip = new Tip(1, "It's a tip");
+        try {
+            categoryController.editTip(2, tip);
+            fail("Excepting exception.");
+        } catch (Exception e) {
+            Assertions.assertThat(e).isInstanceOf(CategoryController.IdentityMismatchException.class);
+        }
+
     }
 }

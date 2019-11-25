@@ -1,5 +1,6 @@
 package com.cmcoding.Categories;
 
+import com.cmcoding.Categories.Tip.Tip;
 import com.cmcoding.CmCodingBackendApplication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -80,5 +81,20 @@ public class CategoryControllerIT {
                 "      \"tip\": \"Lung Transplant- highlight the 3 stages Removal, Backbench work and Insertion.\",\n" +
                 "      \"categoryId\": 8\n" +
                 "    }");
+    }
+
+    @Test
+    public void editTipsById() {
+        RestTemplate rt = new RestTemplate();
+        String url = "http://localhost:" + port + "/categories/1/tips/1";
+
+        String response = rt.postForObject(url, new Tip(1, "Eat so many fruits", 1), String.class);
+
+        assertThat(response).isEqualToIgnoringWhitespace("{\n" +
+                "  \"id\":1,\n" +
+                "  \"tip\": \"Eat so many fruits\",\n" +
+                "  \"categoryId\":1\n" +
+                "}"
+        );
     }
 }

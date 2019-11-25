@@ -38,8 +38,8 @@ public class TipCategoryRepositoryTest {
     public void canAddTipsToCategoryAndRetrieveThem() {
         TipCategory savedTipCategory = tipCategoryRepository.save("General Advice");
 
-        Tip newTip1 = tipRepository.save("Have a regular sleep schedule.", savedTipCategory.getId());
-        Tip newTip2 = tipRepository.save("Do your taxes.", savedTipCategory.getId());
+        Tip newTip1 = tipRepository.save(savedTipCategory.getId(), "Have a regular sleep schedule.");
+        Tip newTip2 = tipRepository.save(savedTipCategory.getId(), "Do your taxes.");
 
         entityManager.clear();
 

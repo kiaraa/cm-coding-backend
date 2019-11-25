@@ -2,7 +2,6 @@ package com.cmcoding.Categories.Tip;
 
 import com.cmcoding.Categories.TipCategory;
 import com.cmcoding.Categories.TipCategoryRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class TipRepositoryTest {
         int categoryId = category.getId();
         String tipMessage = "Eat a lot of veggies.";
 
-        Tip savedTip = tipRepository.save(tipMessage, categoryId);
+        Tip savedTip = tipRepository.save(categoryId, tipMessage);
 
         assertThat(savedTip.getTip()).isEqualTo(tipMessage);
         assertThat(savedTip.getId()).isNotNull();
@@ -45,7 +44,7 @@ public class TipRepositoryTest {
 
         String tipMessage = "Eat a lot of veggies.";
 
-        Tip savedTip = tipRepository.save(tipMessage, categoryId);
+        Tip savedTip = tipRepository.save(categoryId, tipMessage);
 
         entityManager.clear();
 
@@ -61,7 +60,7 @@ public class TipRepositoryTest {
         String initialTipMessage = "Don't bother looking before crossing the street.";
 
         String correctString = "Always look both ways before crossing the street.";
-        Tip savedTip = tipRepository.save(initialTipMessage, categoryId);
+        Tip savedTip = tipRepository.save(categoryId, initialTipMessage);
         int tipId = savedTip.getId();
         Tip editedTip = tipRepository.edit(tipId, correctString);
         Tip tipWithSameId = tipRepository.retreiveById(tipId);
@@ -74,7 +73,7 @@ public class TipRepositoryTest {
     public void canDeleteTips() {
         TipCategory category = tipCategoryRepository.save("General Health");
         int categoryId = category.getId();
-        Tip tipToDelete = tipRepository.save("Delete this tip.", categoryId);
+        Tip tipToDelete = tipRepository.save(categoryId, "Delete this tip.");
 
         int tipId = tipToDelete.getId();
         Tip deletedTip = tipRepository.delete(tipId);

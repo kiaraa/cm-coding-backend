@@ -16,7 +16,7 @@ public class TipRepository {
     @Autowired
     private TipCategoryEntityRepository tipCategoryEntityRepository;
 
-    public Tip save(String tipMessage, int categoryId) {
+    public Tip save(int categoryId, String tipMessage) {
         TipCategoryEntity tipCategoryEntity = tipCategoryEntityRepository.findById(categoryId).get();
         TipEntity tipEntity = new TipEntity(tipMessage, tipCategoryEntity);
         TipEntity savedTipEntity = tipEntityRepository.save(tipEntity);
@@ -38,7 +38,7 @@ public class TipRepository {
         TipEntity initialTipEntity = tipEntityRepository.findById(id).get();
         initialTipEntity.setTip(newTip);
         TipEntity editedTip = tipEntityRepository.save(initialTipEntity);
-        return new Tip(editedTip.getId(), editedTip.getTip());
+        return new Tip(editedTip.getId(), editedTip.getTip(), editedTip.getCategory().getId());
     }
 
     public Tip delete(int tipId) {
