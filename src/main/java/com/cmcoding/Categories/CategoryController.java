@@ -62,6 +62,12 @@ public class CategoryController {
         return editedTip;
     }
 
+    @PutMapping("/categories/{catId}/tips")
+    public Tip addTip(@RequestBody Tip newTip) throws IdentityMismatchException {
+        Tip tipToSave = tipRepository.save(newTip.getCategoryId(), newTip.getTip());
+        return tipToSave;
+    }
+
     public static class IdentityMismatchException extends RuntimeException {
 
         public IdentityMismatchException(String message) {

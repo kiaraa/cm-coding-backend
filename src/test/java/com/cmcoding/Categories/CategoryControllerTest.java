@@ -153,6 +153,16 @@ public class CategoryControllerTest {
         } catch (Exception e) {
             Assertions.assertThat(e).isInstanceOf(CategoryController.IdentityMismatchException.class);
         }
-
     }
+
+    @Test
+    public void addTipReturnsTip(){
+        Tip tip = new Tip(null, "tip", 1);
+        Mockito.when(tipRepository.save(tip.getCategoryId(), tip.getTip())).thenReturn(tip);
+
+        Tip response = categoryController.addTip(tip);
+
+        Assertions.assertThat(response).isEqualTo(tip);
+    }
+
 }

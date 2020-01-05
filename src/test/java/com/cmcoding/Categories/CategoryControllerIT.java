@@ -3,13 +3,21 @@ package com.cmcoding.Categories;
 import com.cmcoding.Categories.Tip.Tip;
 import com.cmcoding.CmCodingBackendApplication;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+
 import static org.assertj.core.api.Assertions.assertThat;
+//import static sun.text.normalizer.UTF16.valueOf;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = CmCodingBackendApplication.class)
@@ -53,7 +61,7 @@ public class CategoryControllerIT {
     }
 
     @Test
-    public void testGetCategoryIdTips(){
+    public void testGetCategoryIdTips() {
         RestTemplate rt = new RestTemplate();
         String url = "http://localhost:" + port + "/categories/8/tips";
         String response = rt.getForObject(url, String.class);
@@ -72,7 +80,7 @@ public class CategoryControllerIT {
     }
 
     @Test
-    public void getTipById(){
+    public void getTipById() {
         RestTemplate rt = new RestTemplate();
         String url = "http://localhost:" + port + "/categories/8/tips/49";
         String response = rt.getForObject(url, String.class);
@@ -97,4 +105,21 @@ public class CategoryControllerIT {
                 "}"
         );
     }
+
+    @Test
+    public void putTip() {
+        RestTemplate rt = new RestTemplate();
+        String url = "http://localhost:" + port + "/categories/2/tips";
+
+        HttpEntity<Tip> tipHttpEntity = new HttpEntity<>(new Tip("Eat so many fruits", 2));
+        ResponseEntity<Tip> response = rt.exchange(url, HttpMethod.PUT, tipHttpEntity, Tip.class, new HashMap<>());
+
+        Tip responseBody = response.getBody();
+
+        Tip returnedTip = rt.getForObject("http://localhost:" + port + "/categories/2/tips/" + responseBody.getId(), Tip.class);
+
+        assertThat(returnedTip.getTip()).isEqualTo(responseBody.getTip());
+        assertThat(returnedTip.getCategoryId()).isEqualTo(responseBody.getCategoryId());
+        assertThat(responseBody.getId()).isNotNull();
+    };
 }
